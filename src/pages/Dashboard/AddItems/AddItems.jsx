@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_API;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
-// const apiUrl = 'http://localhost:3000/api?key=603066f07f0ce79df86fb67659f58178';
 
 const AddItems = () => {
   const { register, handleSubmit, reset } = useForm();

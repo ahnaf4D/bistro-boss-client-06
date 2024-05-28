@@ -1,6 +1,6 @@
 import axios from 'axios';
 const axiosSecure = axios.create({
-  baseURL: `http://localhost:3000`,
+  baseURL: `https://bistro-server154.vercel.app`,
 });
 const useAxiosPublic = () => {
   return axiosSecure;

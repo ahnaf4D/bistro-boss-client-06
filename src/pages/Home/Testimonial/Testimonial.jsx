@@ -13,7 +13,9 @@ const Testimonial = () => {
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axios.get(`http://localhost:3000/reviews`);
+      const { data } = await axios.get(
+        `https://bistro-server154.vercel.app/reviews`
+      );
       setReviews(data);
     };
     getData();

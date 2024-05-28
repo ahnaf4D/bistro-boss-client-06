@@ -78,7 +78,7 @@ export const routes = createBrowserRouter([
         path: 'update-item/:id',
         element: <UpdateItem></UpdateItem>,
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/menu/${params.id}`),
+          fetch(`https://bistro-server154.vercel.app/menu/${params.id}`),
       },
     ],
   },
