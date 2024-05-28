@@ -41,9 +41,9 @@ const Dashboard = () => {
                 <NavLink to='/dashboard/manage-items'>
                   <FaList />
                   Manage Items
-                  <span className='badge badge-warning font-medium'>
+                  {/* <span className='badge badge-warning font-medium'>
                     {cart.length}
-                  </span>
+                  </span> */}
                 </NavLink>
               </li>
               <li>

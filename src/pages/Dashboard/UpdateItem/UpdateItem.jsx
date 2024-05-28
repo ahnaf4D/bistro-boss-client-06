@@ -1,18 +1,17 @@
-import { useForm } from 'react-hook-form';
-import SectionTitle from '../../../components/SectionTitle/SectionTitle';
-import useAxiosPublic from '../../../hooks/useAxiosPublic';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
-
+import useAxiosPublic from '../../../hooks/useAxiosPublic';
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_API;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
-// const apiUrl = 'http://localhost:3000/api?key=603066f07f0ce79df86fb67659f58178';
-
-const AddItems = () => {
-  const { register, handleSubmit, reset } = useForm();
-  const axiosPublic = useAxiosPublic();
+const UpdateItem = () => {
+  const item = useLoaderData();
   const axiosSecure = useAxiosSecure();
-
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
+  const { register, handleSubmit, reset } = useForm();
+  //   console.log(item);
   const onSubmit = async (data) => {
     console.log(data);
     const imageFile = { image: data.image[0] };
@@ -29,23 +28,21 @@ const AddItems = () => {
         category: data.category,
         image: res.data.data.display_url,
       };
-      const menuRes = await axiosSecure.post('/menu', menuItem);
+      const menuRes = await axiosSecure.patch(`/menu/${item._id}`, menuItem);
       console.log(menuRes.data);
-      if (menuRes.data.insertedId) {
+      if (menuRes.data.acknowledged) {
         reset();
         Swal.fire({
-          text: `${data.name} added to the menu`,
+          text: `${data.name} updated to the menu`,
           icon: 'success',
         });
+        navigate('/dashboard/manage-items');
       }
     }
   };
   return (
-    <div className='p-6  min-h-screen bg-gray-100'>
-      <SectionTitle
-        heading={'ADD AN ITEM'}
-        subheading={"What's new?"}
-      ></SectionTitle>
+    <div>
+      <h1 className='text-center text-3xl font-medium'>Update Item</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='bg-white mx-auto h-auto rounded-lg p-8 shadow-xl max-w-3xl'
@@ -61,6 +58,7 @@ const AddItems = () => {
             {...register('name', { required: true })}
             placeholder='Recipe Name'
             className='input input-bordered w-full text-xl p-4 rounded-md border-2 focus:outline-none focus:border-blue-500'
+            defaultValue={item.name}
           />
         </div>
         <div className='form-control mb-6'>
@@ -70,6 +68,7 @@ const AddItems = () => {
           <select
             className='h-12 input-bordered w-full  p-3 rounded-md border-2 focus:outline-none focus:border-blue-500'
             {...register('category', { required: true })}
+            defaultValue={item.category}
           >
             <option value='salad'>Salad</option>
             <option value='drinks'>Drinks</option>
@@ -89,6 +88,7 @@ const AddItems = () => {
             placeholder='$00.00'
             className='input input-bordered w-full text-xl p-4 rounded-md border-2 focus:outline-none focus:border-blue-500'
             {...register('price', { required: true })}
+            defaultValue={item.price}
           />
         </div>
         <div className='form-control mb-6'>
@@ -101,6 +101,7 @@ const AddItems = () => {
             placeholder='Enter the recipe details here...'
             className='textarea textarea-bordered w-full text-xl p-4 rounded-md border-2 focus:outline-none focus:border-blue-500 h-32 resize-none'
             {...register('recipe', { required: true })}
+            defaultValue={item.recipe}
           ></textarea>
           <label className='label mt-4 mb-2'>
             <span className='label-text text-2xl font-semibold'>
@@ -117,7 +118,7 @@ const AddItems = () => {
           <input
             type='submit'
             className='btn btn-primary btn-wide text-xl text-white mx-auto'
-            value='Add Item'
+            value='Update Item'
           />
         </div>
       </form>
@@ -125,4 +126,4 @@ const AddItems = () => {
   );
 };
 
-export default AddItems;
+export default UpdateItem;
